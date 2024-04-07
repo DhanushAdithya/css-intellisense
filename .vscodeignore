@@ -1,0 +1,12 @@
+node_modules/**
+.vscode/**
+.github/**
+src/**
+packages/**
+tests/**
+**/*.ts
+**/*.map
+.gitignore
+**/tsconfig.json
+**/*.node
+assets/*.css

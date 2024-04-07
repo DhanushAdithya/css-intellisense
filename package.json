@@ -1,0 +1,48 @@
+{
+    "name": "css-intellisense",
+    "description": "css Intellisense from a css file",
+    "author": "Dhanush Adithya S",
+    "license": "MIT",
+    "version": "1.0.0",
+    "publisher": "Dhanush Adithya S",
+    "categories": [],
+    "files": [
+        "out",
+        "assets"
+    ],
+    "engines": {
+        "vscode": "^1.75.0"
+    },
+    "activationEvents": [
+        "onLanguage:javascriptreact",
+        "onLanguage:typescriptreact"
+    ],
+    "main": "./client/out/extension",
+    "contributes": {
+        "configuration": {}
+    },
+    "scripts": {
+        "compile": "tsc -b",
+        "watch": "tsc -b -w",
+        "package": "vsce package --no-dependencies",
+        "postinstall": "cd client && npm i && cd ../server && npm i && cd ..",
+        "generate": "ts-node ./scripts/generate-css-info.ts"
+    },
+    "devDependencies": {
+        "@types/node": "^20.5.7",
+        "dotenv": "^16.4.5",
+        "postcss": "^8.4.38",
+        "prettier": "^3.2.5",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.2.2"
+    },
+    "prettier": {
+        "arrowParens": "avoid",
+        "semi": true,
+        "singleQuote": false,
+        "trailingComma": "all",
+        "printWidth": 80,
+        "tabWidth": 3,
+        "useTabs": true
+    }
+}

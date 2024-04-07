@@ -1,0 +1,7 @@
+out
+node_modules
+.vscode-test
+tsconfig.tsbuildinfo
+assets/*.css
+*.vsix
+.env
