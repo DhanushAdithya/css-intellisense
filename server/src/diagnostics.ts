@@ -29,16 +29,22 @@ export class DiagnosticsService {
 		for (let i = 0; i < lines?.length; ++i) {
 			const line = lines[i];
 
-			const cssImportRegex = /import(?:.*?)\.css['"`]/g;
+			const cssImportRegex = /import(?:.*?)\.s?css['"`]/g;
 			const styleTagRegex = /<style(?:.*?)[^\/]>/g;
 			const classNameMatch = classNameMatchInfo(line, 0);
 			if (classNameMatch) {
 				const { m1, m2, index } = classNameMatch;
 
-				const classes = m2.split(/\s+/g).filter(Boolean);
+                const classesSplitWithSpaces = m2.split(/(\s+)/g)
+				const classes = classesSplitWithSpaces.filter(cls => cls.trim().length);
+                const classFreq = classes.reduce((acc, val) => {
+                    acc[val] = acc[val] ? acc[val] + 1 : 1;
+                    return acc;
+                }, {} as Record<string, number>);
 				classes.forEach(cls => {
 					if (!classList.includes(cls)) {
-						const start = index + m1.length + m2.indexOf(cls);
+                        const unknownClassIdx = classesSplitWithSpaces.indexOf(cls);
+						const start = index + m1.length + classesSplitWithSpaces.slice(0, unknownClassIdx).join("").length;
 						const end = start + cls.length;
 
 						const startPos = { line: i, character: start };
