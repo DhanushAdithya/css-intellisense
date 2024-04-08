@@ -42,8 +42,7 @@ export class ColorService {
 						const startPos = { line: i, character: start };
 						const endPos = { line: i, character: end };
 
-						let color: TColor | null = null;
-						color =
+						let color: TColor =
 							cache[className] ||
 							parseHexToRGB(this.CSSInfo[className].c as string);
 						const range = { start: startPos, end: endPos };
@@ -60,10 +59,6 @@ export class ColorService {
 	};
 
 	public onColorPresentation = (color: Color): ColorPresentation[] => {
-		return [
-			{
-				label: "color",
-			},
-		];
+		return [];
 	};
 }

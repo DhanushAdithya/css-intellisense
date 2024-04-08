@@ -34,8 +34,6 @@ export type TCSSInfo = {
 
 export const CLASSNAME_REGEX =
     /(className\s*=\s*(?:\{`|['"`]))([\w\-\s]+)?(`}|['"`])?/;
-export const HEX_REGEX =
-    /#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})?/g;
 
 const items: Diagnostic[] = [];
 const kind: DocumentDiagnosticReportKind = DocumentDiagnosticReportKind.Full;
@@ -60,13 +58,18 @@ export const classNameMatchInfo = (line: string, character: number): TClassNameM
 };
 
 export const parseHexToRGB = (hex: string): TColor | null => {
-    if (!HEX_REGEX.test(hex)) return null;
+    if (!hex.startsWith("#")) return null;
+    hex = hex.replace("#", "");
 
-    hex = hex.slice(1);
-    const red = parseInt(hex.slice(0, 2), 16);
-    const green = parseInt(hex.slice(2, 4), 16);
-    const blue = parseInt(hex.slice(4, 6), 16);
-    const alpha = hex.length === 8 ? parseInt(hex.slice(6, 8), 16) / 255 : 1;
+    if (hex.length === 3) hex = hex.replace(/(.)/g, "$1$1") + "ff";
+    else if (hex.length === 6) hex += "ff";
+    else if (hex.length === 8) {}
+    else return null;
+
+    const red = parseInt(hex.slice(0, 2), 16) / 255;
+    const green = parseInt(hex.slice(2, 4), 16) / 255;
+    const blue = parseInt(hex.slice(4, 6), 16) / 255;
+    const alpha = parseInt(hex.slice(6, 8), 16) / 255;
 
     return { red, green, blue, alpha };
 };
