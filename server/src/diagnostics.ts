@@ -60,6 +60,25 @@ export class DiagnosticsService {
 						});
 					}
 				});
+                Object.entries(classFreq).forEach(([cls, freq]) => {
+                    if (freq > 1) {
+                        const duplicateClassIdx = classesSplitWithSpaces.lastIndexOf(cls);
+                        const start = index + m1.length + classesSplitWithSpaces.slice(0, duplicateClassIdx).join("").length;
+                        const end = start + cls.length;
+
+						const startPos = { line: i, character: start };
+						const endPos = { line: i, character: end };
+
+						items.push({
+							message: "Duplicate class name",
+							range: {
+								start: startPos,
+								end: endPos,
+							},
+							severity: DiagnosticSeverity.Warning,
+						});
+                    }
+                });
 			} else if (line.match(cssImportRegex)) {
 				items.push({
 					message: "Avoid importing CSS files",
