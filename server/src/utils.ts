@@ -33,7 +33,7 @@ export type TCSSInfo = {
 };
 
 export const CLASSNAME_REGEX =
-    /(className\s*=\s*(?:\{`|['"`]))([\w\-\s]+)?(`}|['"`])?/;
+    /(className\s*=\s*(?:\{?['"`]))([\w\-\s]+)?(['"`])?/; 
 
 const items: Diagnostic[] = [];
 const kind: DocumentDiagnosticReportKind = DocumentDiagnosticReportKind.Full;
@@ -45,13 +45,13 @@ export const classNameMatchInfo = (line: string, character: number): TClassNameM
     if (!classNameMatch) return null;
 
     const [m0, m1, m2, m3] = classNameMatch;
-    if (!m2 || !m0 || !m1) return null;
+    if (!m0 || !m1 || !m2) return null;
     const { index } = classNameMatch;
     if (!index && index !== 0) return null;
 
     const inRange =  !(
-        character < index + (m1?.length ?? 0) ||
-        character > index + (m1.length ?? 0) + (m2?.length ?? 0)
+        character < index + m1.length ||
+        character > index + m1.length + m2.length
     );
 
     return { index, m0, m1, m2, m3, inRange };
