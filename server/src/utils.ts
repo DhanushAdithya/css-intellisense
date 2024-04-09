@@ -66,7 +66,7 @@ export const createCompletionItem = (
 		label,
 		kind: color ? CompletionItemKind.Color : CompletionItemKind.Constant,
 		...(color ? { detail: color } : {}),
-		...(partialMatch ? { textEdit } : {}),
+		...(partialMatch ? { textEdit, filterText: label } : {}),
 	};
 };
 

@@ -51,16 +51,12 @@ export class CompletionService {
 
 		return classWord.trim().length === 0
 			? allClasses.map(key => createCompletionItem(key, this.CSS_INFO[key]))
-			: allClasses
-					.filter(
-						key => key.startsWith(classWord) || key.includes(classWord),
-					)
-					.map(key =>
-						createCompletionItem(key, this.CSS_INFO[key], true, {
-							range,
-							newText: key,
-						}),
-					);
+			: allClasses.map(key =>
+					createCompletionItem(key, this.CSS_INFO[key], true, {
+						range,
+						newText: key,
+					}),
+				);
 	};
 
 	public onCompletionResolve = (item: CompletionItem) => {
