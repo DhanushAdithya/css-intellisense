@@ -74,8 +74,9 @@ export const classNameMatchInfo = (line: string, character: number): TClassNameM
     const classNameMatch = line.match(CLASSNAME_REGEX);
     if (!classNameMatch) return null;
 
-    const [m0, m1, m2, m3] = classNameMatch;
-    if (!m0 || !m1 || !m2) return null;
+	const [m0, m1, m_2, m3] = classNameMatch;
+	if (!m0 || !m1) return null;
+    const m2 = m_2 || "";
     const { index } = classNameMatch;
     if (!index && index !== 0) return null;
 
