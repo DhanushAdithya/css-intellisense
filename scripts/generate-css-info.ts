@@ -20,7 +20,7 @@ const generateInfo = (nodes?: Array<ChildNode>, breakpoint?: string): void => {
 
 	for (const node of nodes) {
 		if (node.type === "rule") {
-			const selectors = node.selector.split(/,?\n+/g).map(s => s.trim());
+			const selectors = node.selector.split(/,?(?:\n+|\s+)/g).map(s => s.trim()).filter(Boolean);
 			for (const selector of selectors) {
 				if (
 					!isMultipleSelector(selector) &&
