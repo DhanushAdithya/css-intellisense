@@ -38,6 +38,15 @@ export type TCSSInfo = {
     [className: string]: TClassInfo;
 };
 
+export const DiagnosticMessage = {
+	unknownClassName: (className: string) =>
+		`Class "${className}" not found in Global stylesheet`,
+	avoidStyleTag: "Avoid using <style> tag",
+	avoidInlineStyle: "Avoid using inline style",
+	avoidCSSImport: "Avoid using CSS/SCSS import",
+	duplicateClassName: "Duplicate class name",
+};
+
 export const CLASSNAME_REGEX =
     /(className\s*=\s*(?:\{?['"`]))([\w\-\s]+)?(['"`])?/; 
 

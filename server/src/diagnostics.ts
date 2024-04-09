@@ -5,7 +5,7 @@ import {
 	DocumentDiagnosticReport,
 	DocumentDiagnosticReportKind,
 } from "vscode-languageserver";
-import { TCSSInfo, classNameMatchInfo, emptyDiagonstic } from "./utils";
+import { DiagnosticMessage, TCSSInfo, classNameMatchInfo, emptyDiagonstic } from "./utils";
 
 export class DiagnosticsService {
 	private CSSInfo: TCSSInfo = {};
@@ -51,7 +51,7 @@ export class DiagnosticsService {
 						const endPos = { line: i, character: end };
 
 						items.push({
-							message: "Unknown CSS class name",
+							message: DiagnosticMessage.unknownClassName(cls),
 							range: {
 								start: startPos,
 								end: endPos,
@@ -70,7 +70,7 @@ export class DiagnosticsService {
 						const endPos = { line: i, character: end };
 
 						items.push({
-							message: "Duplicate class name",
+							message: DiagnosticMessage.duplicateClassName,
 							range: {
 								start: startPos,
 								end: endPos,
@@ -81,7 +81,7 @@ export class DiagnosticsService {
                 });
 			} else if (line.match(cssImportRegex)) {
 				items.push({
-					message: "Avoid importing CSS files",
+					message: DiagnosticMessage.avoidCSSImport,
 					range: {
 						start: { line: i, character: 0 },
 						end: { line: i, character: line.length },
@@ -90,7 +90,7 @@ export class DiagnosticsService {
 				});
 			} else if (line.match(styleTagRegex)) {
 				items.push({
-					message: "Avoid using style tags",
+					message: DiagnosticMessage.avoidStyleTag,
 					range: {
 						start: { line: i, character: 0 },
 						end: { line: i, character: line.length },
