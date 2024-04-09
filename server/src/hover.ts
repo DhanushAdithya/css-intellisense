@@ -63,8 +63,8 @@ export class HoverService {
 
 		const start = m2.lastIndexOf(" ", char) + 1 + index + m1.length;
 		const end =
-			line.indexOf(" ", character) < 0
-				? m0.length + index - (m3?.length ?? 0)
+			m2.indexOf(" ", char) < 0
+				? index + m0.length - (m3?.length ?? 0)
 				: line.indexOf(" ", character);
 
 		const key = line.slice(start, end).trim();
