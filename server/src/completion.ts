@@ -3,8 +3,10 @@ import {
 	CompletionItemKind,
 	CompletionParams,
 	MarkupKind,
+	Position,
+	Range,
 } from "vscode-languageserver";
-import { classNameMatchInfo, TCSSInfo } from "./utils";
+import { classNameMatchInfo, createCompletionItem, TCSSInfo } from "./utils";
 
 export class CompletionService {
 	private CSS_INFO: TCSSInfo = {};
@@ -24,19 +26,41 @@ export class CompletionService {
 
 		const isInsideClassName = classNameMatchInfo(line, position.character);
 		if (!isInsideClassName) return [];
-		const { inRange } = isInsideClassName;
+		const { inRange, m1, index, m2 } = isInsideClassName;
 		if (!inRange) return [];
 
-		return Object.keys(this.CSS_INFO).map(key => {
-			const color = this.CSS_INFO[key].c;
-			return {
-				label: key,
-				kind: color
-					? CompletionItemKind.Color
-					: CompletionItemKind.Constant,
-				...(color ? { detail: color } : {}),
-			};
-		});
+		const characterRelativeToM2 = position.character - (index + m1.length);
+		const classesSplitWithSpaces = m2
+			.slice(0, characterRelativeToM2)
+			.split(/(\s+)/g);
+		const classWord = classesSplitWithSpaces.pop() || "";
+
+		const start =
+			index +
+			m1.length +
+			m2.slice(0, characterRelativeToM2).lastIndexOf(" ") +
+			1;
+		const end = start + classWord.length;
+
+		const startPos: Position = { line: position.line, character: start };
+		const endPos: Position = { line: position.line, character: end };
+
+		const range: Range = { start: startPos, end: endPos };
+
+		const allClasses = Object.keys(this.CSS_INFO);
+
+		return classWord.trim().length === 0
+			? allClasses.map(key => createCompletionItem(key, this.CSS_INFO[key]))
+			: allClasses
+					.filter(
+						key => key.startsWith(classWord) || key.includes(classWord),
+					)
+					.map(key =>
+						createCompletionItem(key, this.CSS_INFO[key], true, {
+							range,
+							newText: key,
+						}),
+					);
 	};
 
 	public onCompletionResolve = (item: CompletionItem) => {

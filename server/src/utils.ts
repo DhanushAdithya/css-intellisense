@@ -1,4 +1,10 @@
-import { Diagnostic, DocumentDiagnosticReportKind } from "vscode-languageserver";
+import {
+	CompletionItem,
+	CompletionItemKind,
+	Diagnostic,
+	DocumentDiagnosticReportKind,
+	TextEdit,
+} from "vscode-languageserver";
 
 export type TColor = {
     red: number;
@@ -39,6 +45,21 @@ const items: Diagnostic[] = [];
 const kind: DocumentDiagnosticReportKind = DocumentDiagnosticReportKind.Full;
 
 export const emptyDiagonstic = { items, kind };
+
+export const createCompletionItem = (
+	label: string,
+	classInfo: TClassInfo,
+	partialMatch: boolean = false,
+	textEdit?: TextEdit,
+): CompletionItem => {
+	const color = classInfo.c;
+	return {
+		label,
+		kind: color ? CompletionItemKind.Color : CompletionItemKind.Constant,
+		...(color ? { detail: color } : {}),
+		...(partialMatch ? { textEdit } : {}),
+	};
+};
 
 export const classNameMatchInfo = (line: string, character: number): TClassNameMatchInfo | null => {
     const classNameMatch = line.match(CLASSNAME_REGEX);
