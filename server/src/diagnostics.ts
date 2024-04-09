@@ -5,7 +5,12 @@ import {
 	DocumentDiagnosticReport,
 	DocumentDiagnosticReportKind,
 } from "vscode-languageserver";
-import { DiagnosticMessage, TCSSInfo, classNameMatchInfo, emptyDiagonstic } from "./utils";
+import {
+	DiagnosticMessage,
+	TCSSInfo,
+	classNameMatchInfo,
+	emptyDiagonstic,
+} from "./utils";
 
 export class DiagnosticsService {
 	private CSSInfo: TCSSInfo = {};
@@ -35,16 +40,25 @@ export class DiagnosticsService {
 			if (classNameMatch) {
 				const { m1, m2, index } = classNameMatch;
 
-                const classesSplitWithSpaces = m2.split(/(\s+)/g)
-				const classes = classesSplitWithSpaces.filter(cls => cls.trim().length);
-                const classFreq = classes.reduce((acc, val) => {
-                    acc[val] = acc[val] ? acc[val] + 1 : 1;
-                    return acc;
-                }, {} as Record<string, number>);
+				const classesSplitWithSpaces = m2.split(/(\s+)/g);
+				const classes = classesSplitWithSpaces.filter(
+					cls => cls.trim().length,
+				);
+				const classFreq = classes.reduce(
+					(acc, val) => {
+						acc[val] = acc[val] ? acc[val] + 1 : 1;
+						return acc;
+					},
+					{} as Record<string, number>,
+				);
 				classes.forEach(cls => {
 					if (!classList.includes(cls)) {
-                        const unknownClassIdx = classesSplitWithSpaces.indexOf(cls);
-						const start = index + m1.length + classesSplitWithSpaces.slice(0, unknownClassIdx).join("").length;
+						const unknownClassIdx = classesSplitWithSpaces.indexOf(cls);
+						const start =
+							index +
+							m1.length +
+							classesSplitWithSpaces.slice(0, unknownClassIdx).join("")
+								.length;
 						const end = start + cls.length;
 
 						const startPos = { line: i, character: start };
@@ -60,11 +74,16 @@ export class DiagnosticsService {
 						});
 					}
 				});
-                Object.entries(classFreq).forEach(([cls, freq]) => {
-                    if (freq > 1) {
-                        const duplicateClassIdx = classesSplitWithSpaces.lastIndexOf(cls);
-                        const start = index + m1.length + classesSplitWithSpaces.slice(0, duplicateClassIdx).join("").length;
-                        const end = start + cls.length;
+				Object.entries(classFreq).forEach(([cls, freq]) => {
+					if (freq > 1) {
+						const duplicateClassIdx =
+							classesSplitWithSpaces.lastIndexOf(cls);
+						const start =
+							index +
+							m1.length +
+							classesSplitWithSpaces.slice(0, duplicateClassIdx).join("")
+								.length;
+						const end = start + cls.length;
 
 						const startPos = { line: i, character: start };
 						const endPos = { line: i, character: end };
@@ -77,8 +96,8 @@ export class DiagnosticsService {
 							},
 							severity: DiagnosticSeverity.Warning,
 						});
-                    }
-                });
+					}
+				});
 			} else if (line.match(cssImportRegex)) {
 				items.push({
 					message: DiagnosticMessage.avoidCSSImport,

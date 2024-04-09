@@ -1,14 +1,14 @@
 {
-  "name": "css-intellisense-server",
-  "description": "server",
-  "version": "1.0.0",
-  "author": "Dhanush Adithya S",
-  "license": "MIT",
-  "engines": {
-    "node": "*"
-  },
-  "dependencies": {
-    "vscode-languageserver": "^9.0.1",
-    "vscode-languageserver-textdocument": "^1.0.8"
-  }
+	"name": "css-intellisense-server",
+	"description": "server",
+	"version": "1.0.0",
+	"author": "Dhanush Adithya S",
+	"license": "MIT",
+	"engines": {
+		"node": "*"
+	},
+	"dependencies": {
+		"vscode-languageserver": "^9.0.1",
+		"vscode-languageserver-textdocument": "^1.0.8"
+	}
 }

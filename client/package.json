@@ -1,17 +1,17 @@
 {
-  "name": "css-intellisense-client",
-  "description": "client",
-  "author": "Dhanush Adithya S",
-  "license": "MIT",
-  "version": "0.0.1",
-  "publisher": "none",
-  "engines": {
-    "vscode": "^1.75.0"
-  },
-  "dependencies": {
-    "vscode-languageclient": "^9.0.1"
-  },
-  "devDependencies": {
-    "@types/vscode": "^1.81.0"
-  }
+	"name": "css-intellisense-client",
+	"description": "client",
+	"author": "Dhanush Adithya S",
+	"license": "MIT",
+	"version": "0.0.1",
+	"publisher": "none",
+	"engines": {
+		"vscode": "^1.75.0"
+	},
+	"dependencies": {
+		"vscode-languageclient": "^9.0.1"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.81.0"
+	}
 }

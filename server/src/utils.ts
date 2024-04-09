@@ -7,35 +7,35 @@ import {
 } from "vscode-languageserver";
 
 export type TColor = {
-    red: number;
-    green: number;
-    blue: number;
-    alpha: number;
+	red: number;
+	green: number;
+	blue: number;
+	alpha: number;
 };
 
 export type TClassInfo = {
-    /** Documentation of the class */
-    d: string;
-    /** Color associated to the class */
-    c?: string;
+	/** Documentation of the class */
+	d: string;
+	/** Color associated to the class */
+	c?: string;
 };
 
 export type DecimalRange = {
-    start: number;
-    end: number;
+	start: number;
+	end: number;
 };
 
 export type TClassNameMatchInfo = {
-    index: number;
-    m0: string;
-    m1: string;
-    m2: string;
-    m3: string;
-    inRange: boolean;
+	index: number;
+	m0: string;
+	m1: string;
+	m2: string;
+	m3: string;
+	inRange: boolean;
 };
 
 export type TCSSInfo = {
-    [className: string]: TClassInfo;
+	[className: string]: TClassInfo;
 };
 
 export const DiagnosticMessage = {
@@ -48,7 +48,7 @@ export const DiagnosticMessage = {
 };
 
 export const CLASSNAME_REGEX =
-    /(className\s*=\s*(?:\{?['"`]))([\w\-\s]+)?(['"`])?/; 
+	/(?<classNameAttr>className\s*=\s*(?:\{?['"`]))(?<classNames>[\w\-\s]+)?(?<closingQuote>['"`]\}?)?/;
 
 const items: Diagnostic[] = [];
 const kind: DocumentDiagnosticReportKind = DocumentDiagnosticReportKind.Full;
@@ -70,37 +70,39 @@ export const createCompletionItem = (
 	};
 };
 
-export const classNameMatchInfo = (line: string, character: number): TClassNameMatchInfo | null => {
-    const classNameMatch = line.match(CLASSNAME_REGEX);
-    if (!classNameMatch) return null;
+export const classNameMatchInfo = (
+	line: string,
+	character: number,
+): TClassNameMatchInfo | null => {
+	const classNameMatch = line.match(CLASSNAME_REGEX);
+	if (!classNameMatch) return null;
 
 	const [m0, m1, m_2, m3] = classNameMatch;
 	if (!m0 || !m1) return null;
-    const m2 = m_2 || "";
-    const { index } = classNameMatch;
-    if (!index && index !== 0) return null;
+	const m2 = m_2 || "";
+	const { index } = classNameMatch;
+	if (!index && index !== 0) return null;
 
-    const inRange =  !(
-        character < index + m1.length ||
-        character > index + m1.length + m2.length
-    );
+	const inRange = !(
+		character < index + m1.length || character > index + m1.length + m2.length
+	);
 
-    return { index, m0, m1, m2, m3, inRange };
+	return { index, m0, m1, m2, m3, inRange };
 };
 
 export const parseHexToRGB = (hex: string): TColor | null => {
-    if (!hex.startsWith("#")) return null;
-    hex = hex.replace("#", "");
+	if (!hex.startsWith("#")) return null;
+	hex = hex.replace("#", "");
 
-    if (hex.length === 3) hex = hex.replace(/(.)/g, "$1$1") + "ff";
-    else if (hex.length === 6) hex += "ff";
-    else if (hex.length === 8) {}
-    else return null;
+	if (hex.length === 3) hex = hex.replace(/(.)/g, "$1$1") + "ff";
+	else if (hex.length === 6) hex += "ff";
+	else if (hex.length === 8) {
+	} else return null;
 
-    const red = parseInt(hex.slice(0, 2), 16) / 255;
-    const green = parseInt(hex.slice(2, 4), 16) / 255;
-    const blue = parseInt(hex.slice(4, 6), 16) / 255;
-    const alpha = parseInt(hex.slice(6, 8), 16) / 255;
+	const red = parseInt(hex.slice(0, 2), 16) / 255;
+	const green = parseInt(hex.slice(2, 4), 16) / 255;
+	const blue = parseInt(hex.slice(4, 6), 16) / 255;
+	const alpha = parseInt(hex.slice(6, 8), 16) / 255;
 
-    return { red, green, blue, alpha };
+	return { red, green, blue, alpha };
 };

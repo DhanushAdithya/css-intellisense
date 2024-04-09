@@ -1,22 +1,14 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "target": "esnext",
-    "lib": ["esnext"],
-    "outDir": "out",
-    "rootDir": "src",
-    "sourceMap": true,
-    "incremental": true
-  },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules",
-    ".vscode-test"
-  ],
-  "references": [
-    { "path": "./client" },
-    { "path": "./server" }
-  ]
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "esnext",
+		"lib": ["esnext"],
+		"outDir": "out",
+		"rootDir": "src",
+		"sourceMap": true,
+		"incremental": true
+	},
+	"include": ["src"],
+	"exclude": ["node_modules", ".vscode-test"],
+	"references": [{ "path": "./client" }, { "path": "./server" }]
 }
